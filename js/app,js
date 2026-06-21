@@ -1,0 +1,37 @@
+// ==================================
+// SafeHer Ultra X
+// Main JavaScript File
+// ==================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sosBtn = document.getElementById("sosBtn");
+    const locationBtn = document.getElementById("locationBtn");
+    const contactsBtn = document.getElementById("contactsBtn");
+    const alarmBtn = document.getElementById("alarmBtn");
+
+    if (sosBtn) {
+        sosBtn.addEventListener("click", () => {
+            alert("🚨 SOS feature will be activated.");
+        });
+    }
+
+    if (locationBtn) {
+        locationBtn.addEventListener("click", () => {
+            alert("📍 Live Location feature will be activated.");
+        });
+    }
+
+    if (contactsBtn) {
+        contactsBtn.addEventListener("click", () => {
+            alert("👨‍👩‍👧 Emergency Contacts feature will be activated.");
+        });
+    }
+
+    if (alarmBtn) {
+        alarmBtn.addEventListener("click", () => {
+            alert("🔔 Emergency Alarm feature will be activated.");
+        });
+    }
+
+    console.log("✅ SafeHer Ultra X initialized successfully.");
+});
