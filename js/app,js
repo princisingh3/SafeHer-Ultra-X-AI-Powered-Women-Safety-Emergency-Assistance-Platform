@@ -8,17 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const locationBtn = document.getElementById("locationBtn");
     const contactsBtn = document.getElementById("contactsBtn");
     const alarmBtn = document.getElementById("alarmBtn");
-
-    if (sosBtn) {
-        sosBtn.addEventListener("click", () => {
-            alert("🚨 SOS feature will be activated.");
-        });
-    }
-
-    if (locationBtn) {
-        locationBtn.addEventListener("click", () => {
-            alert("📍 Live Location feature will be activated.");
-        });
     }
 
     if (contactsBtn) {
