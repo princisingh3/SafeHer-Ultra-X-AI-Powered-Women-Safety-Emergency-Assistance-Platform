@@ -1,0 +1,24 @@
+{
+  "name": "SafeHer Ultra X",
+  "short_name": "SafeHer",
+  "description": "AI-powered women safety platform with SOS, live location sharing, offline protection, and intelligent emergency assistance.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#d63384",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
