@@ -10,17 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const alarmBtn = document.getElementById("alarmBtn");
     }
 
-    if (contactsBtn) {
-        contactsBtn.addEventListener("click", () => {
-            alert("👨‍👩‍👧 Emergency Contacts feature will be activated.");
-        });
-    }
-
-    if (alarmBtn) {
-        alarmBtn.addEventListener("click", () => {
-            alert("🔔 Emergency Alarm feature will be activated.");
-        });
-    }
 
     console.log("✅ SafeHer Ultra X initialized successfully.");
 });
