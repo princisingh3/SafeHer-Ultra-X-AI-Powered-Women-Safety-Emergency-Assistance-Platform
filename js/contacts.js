@@ -6,11 +6,14 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "safeher_emergency_contacts";
+  const STORAGE_KEY = "safeher_contacts";
 
-  function loadContacts() {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+  function getContacts() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch {
+      return [];
+    }
   }
 
   function saveContacts(contacts) {
@@ -19,60 +22,100 @@
 
   function addContact() {
     const name = prompt("Enter contact name:");
-    if (!name) return;
+    if (!name || !name.trim()) return;
 
     const phone = prompt("Enter phone number:");
-    if (!phone) return;
+    if (!phone || !phone.trim()) return;
 
-    const contacts = loadContacts();
-    contacts.push({ name, phone });
+    const contacts = getContacts();
+
+    contacts.push({
+      id: Date.now(),
+      name: name.trim(),
+      phone: phone.trim()
+    });
+
     saveContacts(contacts);
-
-    alert("✅ Emergency contact added successfully.");
+    alert("✅ Contact added successfully.");
   }
 
-  function showContacts() {
-    const contacts = loadContacts();
+  function viewContacts() {
+    const contacts = getContacts();
 
     if (contacts.length === 0) {
-      alert(
-        "No emergency contacts found.\n\nClick the button again and add your first contact."
-      );
+      alert("No emergency contacts saved.");
       return;
     }
 
-    let message = "📞 Emergency Contacts\n\n";
+    let text = "📞 Emergency Contacts\n\n";
 
     contacts.forEach((contact, index) => {
-      message += `${index + 1}. ${contact.name}\n${contact.phone}\n\n`;
+      text += `${index + 1}. ${contact.name}\n📱 ${contact.phone}\n\n`;
     });
 
-    alert(message);
+    alert(text);
   }
 
-  function initContacts() {
-    const contactsBtn = document.getElementById("contactsBtn");
+  function deleteContact() {
+    const contacts = getContacts();
 
-    if (!contactsBtn) return;
+    if (contacts.length === 0) {
+      alert("No contacts available.");
+      return;
+    }
 
-    contactsBtn.addEventListener("click", () => {
-      const contacts = loadContacts();
+    let text = "Select contact number to delete:\n\n";
 
-      if (contacts.length === 0) {
+    contacts.forEach((contact, index) => {
+      text += `${index + 1}. ${contact.name}\n`;
+    });
+
+    const choice = parseInt(prompt(text), 10);
+
+    if (
+      Number.isNaN(choice) ||
+      choice < 1 ||
+      choice > contacts.length
+    ) {
+      return;
+    }
+
+    contacts.splice(choice - 1, 1);
+    saveContacts(contacts);
+
+    alert("🗑️ Contact deleted successfully.");
+  }
+
+  function openContactsMenu() {
+    const option = prompt(
+      "Emergency Contacts\n\n" +
+      "1 - Add Contact\n" +
+      "2 - View Contacts\n" +
+      "3 - Delete Contact"
+    );
+
+    switch (option) {
+      case "1":
         addContact();
-      } else {
-        const choice = confirm(
-          "Press OK to view saved contacts.\nPress Cancel to add a new contact."
-        );
-
-        if (choice) {
-          showContacts();
-        } else {
-          addContact();
-        }
-      }
-    });
+        break;
+      case "2":
+        viewContacts();
+        break;
+      case "3":
+        deleteContact();
+        break;
+      default:
+        break;
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", initContacts);
+  function init() {
+    const button = document.getElementById("contactsBtn");
+
+    if (!button) return;
+
+    button.addEventListener("click", openContactsMenu);
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
 })();
