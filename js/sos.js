@@ -6,35 +6,79 @@
 (function () {
   "use strict";
 
-  function showSOSAlert() {
-    const confirmed = window.confirm(
-      "🚨 Do you want to activate the SOS alert?"
+  const SOS_HISTORY_KEY = "safeher_sos_history";
+  const CONTACTS_KEY = "safeher_contacts";
+
+  function saveSOSHistory() {
+    const history = JSON.parse(
+      localStorage.getItem(SOS_HISTORY_KEY) || "[]"
     );
 
-    if (!confirmed) {
-      return;
+    history.push({
+      time: new Date().toLocaleString(),
+      online: navigator.onLine
+    });
+
+    localStorage.setItem(
+      SOS_HISTORY_KEY,
+      JSON.stringify(history)
+    );
+  }
+
+  function getEmergencyContacts() {
+    try {
+      return JSON.parse(
+        localStorage.getItem(CONTACTS_KEY) || "[]"
+      );
+    } catch {
+      return [];
+    }
+  }
+
+  function triggerSOS() {
+    saveSOSHistory();
+
+    const contacts = getEmergencyContacts();
+
+    let message =
+      "🆘 SOS ACTIVATED\n\n" +
+      "Time: " +
+      new Date().toLocaleString() +
+      "\n\n";
+
+    if (contacts.length > 0) {
+      message += "Emergency Contacts:\n";
+
+      contacts.forEach((contact, index) => {
+        message +=
+          `${index + 1}. ${contact.name} (${contact.phone})\n`;
+      });
+
+      message +=
+        "\nPlease contact these people or share your location immediately.";
+    } else {
+      message +=
+        "No emergency contacts have been added yet.\nPlease add at least one contact.";
     }
 
-    // Placeholder for future emergency actions
-    // (location sharing, SMS, API call, etc.)
-    alert("🆘 SOS Activated! Emergency workflow started.");
-    console.log("SOS activated at:", new Date().toISOString());
+    alert(message);
+
+    // Vibrate if supported
+    if ("vibrate" in navigator) {
+      navigator.vibrate([500, 200, 500, 200, 500]);
+    }
   }
 
   function initSOS() {
-    const sosButton = document.getElementById("sosBtn");
+    const btn = document.getElementById("sosBtn");
 
-    if (!sosButton) {
-      console.warn("SOS button (#sosBtn) not found.");
-      return;
-    }
+    if (!btn) return;
 
-    sosButton.addEventListener("click", showSOSAlert);
+    btn.addEventListener("click", triggerSOS);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSOS);
-  } else {
-    initSOS();
-  }
+  document.addEventListener(
+    "DOMContentLoaded",
+    initSOS
+  );
 })();
