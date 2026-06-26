@@ -8,6 +8,36 @@
 
   let audioContext = null;
   let oscillator = null;
+  let gainNode = null;
+
+  function stopAlarm() {
+    try {
+      if (oscillator) {
+        oscillator.stop();
+        oscillator.disconnect();
+        oscillator = null;
+      }
+
+      if (gainNode) {
+        gainNode.disconnect();
+        gainNode = null;
+      }
+
+      if (audioContext) {
+        audioContext.close();
+        audioContext = null;
+      }
+
+      if ("vibrate" in navigator) {
+        navigator.vibrate(0);
+      }
+
+      alert("🔕 Emergency Alarm Stopped");
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   function startAlarm() {
     if (oscillator) {
@@ -16,47 +46,40 @@
     }
 
     try {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      audioContext =
+        new (window.AudioContext || window.webkitAudioContext)();
 
       oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      gainNode = audioContext.createGain();
 
       oscillator.type = "square";
-      oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+      oscillator.frequency.value = 1000;
 
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.value = 0.4;
 
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
 
       oscillator.start();
 
-      alert("🔔 Emergency Alarm Started");
+      if ("vibrate" in navigator) {
+        navigator.vibrate([500, 300, 500, 300, 500]);
+      }
+
+      alert("🚨 Emergency Alarm Started");
+
     } catch (error) {
       console.error(error);
-      alert("Unable to start alarm on this device.");
-    }
-  }
-
-  function stopAlarm() {
-    if (oscillator) {
-      oscillator.stop();
-      oscillator.disconnect();
-      oscillator = null;
-    }
-
-    if (audioContext) {
-      audioContext.close();
-      audioContext = null;
+      alert("Unable to start alarm.");
     }
   }
 
   function initAlarm() {
-    const alarmBtn = document.getElementById("alarmBtn");
+    const btn = document.getElementById("alarmBtn");
 
-    if (!alarmBtn) return;
+    if (!btn) return;
 
-    alarmBtn.addEventListener("click", () => {
+    btn.addEventListener("click", function () {
       if (oscillator) {
         stopAlarm();
       } else {
@@ -65,5 +88,8 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", initAlarm);
+  document.addEventListener(
+    "DOMContentLoaded",
+    initAlarm
+  );
 })();
