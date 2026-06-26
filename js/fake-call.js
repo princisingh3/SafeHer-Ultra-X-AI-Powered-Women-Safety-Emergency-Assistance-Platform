@@ -6,46 +6,68 @@
 (function () {
   "use strict";
 
+  let fakeCallTimer = null;
+
+  function clearFakeCall() {
+    if (fakeCallTimer) {
+      clearTimeout(fakeCallTimer);
+      fakeCallTimer = null;
+    }
+  }
+
   function startFakeCall() {
+    clearFakeCall();
+
     const callerName =
-      prompt("Enter caller name:", "Family Member") || "Unknown Caller";
+      prompt("Enter caller name:", "Family Member");
+
+    if (callerName === null) return;
+
+    const name = callerName.trim() || "Unknown Caller";
 
     const delayInput = prompt(
       "Start fake call after how many seconds?",
       "5"
     );
 
-    const delay = Number(delayInput);
+    if (delayInput === null) return;
 
-    if (!Number.isFinite(delay) || delay < 0) {
-      alert("Please enter a valid number of seconds.");
+    const delay = parseInt(delayInput, 10);
+
+    if (Number.isNaN(delay) || delay < 0) {
+      alert("Please enter a valid number.");
       return;
     }
 
-    alert(`📞 Fake call scheduled in ${delay} second(s).`);
+    alert(`📞 Fake call will start in ${delay} second(s).`);
 
-    setTimeout(() => {
+    fakeCallTimer = setTimeout(function () {
+
       const answer = confirm(
-        `📞 Incoming Call\n\n${callerName}\n\nPress OK to Answer or Cancel to Decline.`
+        `📞 Incoming Call\n\n${name}\n\nPress OK to Answer\nPress Cancel to Decline`
       );
 
       if (answer) {
-        alert(`Connected to "${callerName}" (Simulation Only)`);
+        alert(`✅ Connected to ${name}\n\n(Simulation Only)`);
       } else {
-        alert("Call Declined");
+        alert("❌ Call Declined");
       }
+
+      fakeCallTimer = null;
+
     }, delay * 1000);
   }
 
-  function initFakeCall() {
-    const fakeCallBtn = document.getElementById("fakeCallBtn");
+  function init() {
+    const btn = document.getElementById("fakeCallBtn");
 
-    if (!fakeCallBtn) {
-      return;
-    }
+    if (!btn) return;
 
-    fakeCallBtn.addEventListener("click", startFakeCall);
+    btn.addEventListener("click", startFakeCall);
   }
 
-  document.addEventListener("DOMContentLoaded", initFakeCall);
+  document.addEventListener(
+    "DOMContentLoaded",
+    init
+  );
 })();
