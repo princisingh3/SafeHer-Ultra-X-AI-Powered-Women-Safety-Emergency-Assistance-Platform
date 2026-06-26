@@ -8,10 +8,25 @@
 
   const STORAGE_KEY = "safeher_medical_id";
 
-  function editMedicalInfo() {
-    const existing = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "{}"
+  function getMedicalData() {
+    try {
+      return JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "{}"
+      );
+    } catch {
+      return {};
+    }
+  }
+
+  function saveMedicalData(data) {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(data)
     );
+  }
+
+  function editMedicalInfo() {
+    const existing = getMedicalData();
 
     const name = prompt("Full Name:", existing.name || "");
     if (name === null) return;
@@ -23,65 +38,88 @@
     if (bloodGroup === null) return;
 
     const allergies = prompt(
-      "Allergies (optional):",
+      "Allergies (Optional):",
       existing.allergies || ""
     );
     if (allergies === null) return;
 
-    const emergencyNote = prompt(
-      "Medical Note (optional):",
-      existing.emergencyNote || ""
+    const medicalNote = prompt(
+      "Medical Note (Optional):",
+      existing.medicalNote || ""
     );
-    if (emergencyNote === null) return;
+    if (medicalNote === null) return;
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        name: name.trim(),
-        bloodGroup: bloodGroup.trim(),
-        allergies: allergies.trim(),
-        emergencyNote: emergencyNote.trim()
-      })
-    );
+    saveMedicalData({
+      name: name.trim(),
+      bloodGroup: bloodGroup.trim(),
+      allergies: allergies.trim(),
+      medicalNote: medicalNote.trim(),
+      updatedAt: new Date().toLocaleString()
+    });
 
-    alert("✅ Medical ID saved.");
+    alert("✅ Medical ID saved successfully.");
   }
 
   function viewMedicalInfo() {
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "{}"
-    );
+    const data = getMedicalData();
 
     if (!data.name) {
-      alert("No Medical ID found. Please add your details.");
+      alert("No Medical ID found.");
       return;
     }
 
     alert(
       "🩺 Medical ID\n\n" +
-        "Name: " + data.name + "\n" +
-        "Blood Group: " + data.bloodGroup + "\n" +
-        "Allergies: " + data.allergies + "\n" +
-        "Note: " + data.emergencyNote
+      "Name: " + data.name + "\n" +
+      "Blood Group: " + data.bloodGroup + "\n" +
+      "Allergies: " + (data.allergies || "-") + "\n" +
+      "Medical Note: " + (data.medicalNote || "-") + "\n\n" +
+      "Last Updated:\n" +
+      data.updatedAt
     );
   }
 
-  function initMedical() {
-    const btn = document.getElementById("medicalBtn");
-    if (!btn) return;
-
-    btn.addEventListener("click", () => {
-      const view = confirm(
-        "Press OK to view Medical ID.\nPress Cancel to edit it."
-      );
-
-      if (view) {
-        viewMedicalInfo();
-      } else {
-        editMedicalInfo();
-      }
-    });
+  function clearMedicalInfo() {
+    localStorage.removeItem(STORAGE_KEY);
+    alert("🗑️ Medical ID deleted.");
   }
 
-  document.addEventListener("DOMContentLoaded", initMedical);
+  function openMenu() {
+    const option = prompt(
+      "Medical ID\n\n" +
+      "1 = View\n" +
+      "2 = Edit\n" +
+      "3 = Delete"
+    );
+
+    switch (option) {
+      case "1":
+        viewMedicalInfo();
+        break;
+
+      case "2":
+        editMedicalInfo();
+        break;
+
+      case "3":
+        clearMedicalInfo();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  function init() {
+    const btn = document.getElementById("medicalBtn");
+
+    if (!btn) return;
+
+    btn.addEventListener("click", openMenu);
+  }
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    init
+  );
 })();
