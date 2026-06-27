@@ -1,57 +1,86 @@
-/* ===============================
+/* =====================================
    SafeHer Ultra X
    Main Stylesheet
-================================= */
+===================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f7f7fb;
-    color: #222;
-    min-height: 100vh;
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fb;
+    color:#222;
+    min-height:100vh;
+    transition:0.3s;
 }
 
-header {
-    background: #d63384;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
+body[data-theme="dark"]{
+    background:#121212;
+    color:#ffffff;
 }
 
-header h1 {
-    font-size: 2rem;
-    margin-bottom: 8px;
+header{
+    background:#d63384;
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
 }
 
-header p {
-    font-size: 1rem;
-    opacity: 0.9;
+header h1{
+    font-size:2rem;
+    margin-bottom:8px;
 }
 
-main {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    display: grid;
-    gap: 15px;
+header p{
+    opacity:.9;
 }
 
-button {
-    padding: 15px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background: #d63384;
-    color: #fff;
-    transition: opacity 0.2s ease;
+.dashboard{
+    width:90%;
+    max-width:600px;
+    margin:30px auto;
+    display:grid;
+    gap:15px;
 }
 
-button:hover {
-    opacity: 0.9;
+button{
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:#d63384;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    opacity:.95;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+body[data-theme="dark"] button{
+    background:#ff4fa3;
+}
+
+@media(max-width:768px){
+
+    header h1{
+        font-size:1.7rem;
+    }
+
+    button{
+        font-size:15px;
+        padding:15px;
+    }
+
 }
