@@ -1,15 +1,35 @@
-// ==================================
+// =====================================
 // SafeHer Ultra X
 // Main JavaScript File
-// ==================================
+// =====================================
 
-document.addEventListener("DOMContentLoaded", () => {
-    const sosBtn = document.getElementById("sosBtn");
-    const locationBtn = document.getElementById("locationBtn");
-    const contactsBtn = document.getElementById("contactsBtn");
-    const alarmBtn = document.getElementById("alarmBtn");
-    }
+(function () {
+  "use strict";
 
-
+  function initApp() {
     console.log("✅ SafeHer Ultra X initialized successfully.");
-});
+
+    const requiredButtons = [
+      "sosBtn",
+      "locationBtn",
+      "contactsBtn",
+      "emergencyMsgBtn",
+      "alarmBtn",
+      "fakeCallBtn",
+      "medicalBtn",
+      "voiceSOSBtn",
+      "checkInBtn",
+      "tripBtn",
+      "settingsBtn"
+    ];
+
+    requiredButtons.forEach(function (id) {
+      if (!document.getElementById(id)) {
+        console.warn("Missing button:", id);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initApp);
+
+})();
