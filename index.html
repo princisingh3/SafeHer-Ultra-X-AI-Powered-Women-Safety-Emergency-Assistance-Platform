@@ -1,81 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#d63384" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#d63384">
 
   <title>SafeHer Ultra X</title>
-  <meta
-    name="description"
-    content="AI-powered women safety platform with SOS, live location sharing, offline protection, and intelligent emergency assistance."
-  />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="description"
+    content="AI-powered women safety platform with SOS, location sharing, emergency contacts and safety tools.">
 
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
+
   <header>
-    <h1>SafeHer Ultra X</h1>
+    <h1>🛡️ SafeHer Ultra X</h1>
     <p>Stay Safe. Stay Connected.</p>
   </header>
 
-  <main>
-   <main class="dashboard">
+  <main class="dashboard">
 
-  <button id="sosBtn">🆘 SOS</button>
+    <button id="sosBtn">🆘 SOS</button>
 
-  <button id="locationBtn">📍 My Location</button>
+    <button id="locationBtn">📍 My Location</button>
 
-  <button id="contactsBtn">👨‍👩‍👧 Emergency Contacts</button>
+    <button id="contactsBtn">👨‍👩‍👧 Emergency Contacts</button>
 
-  <button id="emergencyMsgBtn">🚨 Emergency Message</button>
+    <button id="emergencyMsgBtn">🚨 Emergency Message</button>
 
-  <button id="alarmBtn">🔔 Emergency Alarm</button>
+    <button id="alarmBtn">🔔 Emergency Alarm</button>
 
-  <button id="fakeCallBtn">📞 Fake Call</button>
+    <button id="fakeCallBtn">📞 Fake Call</button>
 
-  <button id="voiceSOSBtn">🎙️ Voice SOS</button>
+    <button id="voiceSOSBtn">🎤 Voice SOS</button>
 
-  <button id="medicalBtn">🩺 Medical ID</button>
+    <button id="medicalBtn">🩺 Medical ID</button>
 
-  <button id="checkInBtn">⏰ Safety Check-In</button>
+    <button id="checkInBtn">⏰ Safety Check-In</button>
 
-  <button id="tripBtn">🚕 Trip Monitor</button>
+    <button id="tripBtn">🚕 Trip Monitor</button>
 
-  <button id="settingsBtn">⚙️ Settings</button>
-   </main>  
+    <button id="settingsBtn">⚙️ Settings</button>
 
   </main>
 
-  <!-- JavaScript -->
-  <script src="js/app.js"></script>
-
+  <!-- Register Service Worker -->
   <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .then(() => console.log("Service Worker Registered"))
-      .catch((error) => console.error(error));
-  });
-}
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .then(() => console.log("✅ Service Worker Registered"))
+          .catch(err => console.error(err));
+      });
+    }
   </script>
-  <script src="js/settings.js"></script>
+
+  <!-- JavaScript Files -->
   <script src="js/app.js"></script>
   <script src="js/sos.js"></script>
   <script src="js/location.js"></script>
   <script src="js/contacts.js"></script>
+  <script src="js/emergency.js"></script>
   <script src="js/alarm.js"></script>
   <script src="js/fake-call.js"></script>
-  <script src="js/emergency.js"></script>
   <script src="js/medical.js"></script>
+  <script src="js/voice-sos.js"></script>
   <script src="js/checkin.js"></script>
   <script src="js/trip-monitor.js"></script>
-  
+  <script src="js/settings.js"></script>
+
 </body>
+
 </html>
