@@ -13,33 +13,63 @@
     localStorage.setItem(THEME_KEY, theme);
   }
 
-  function toggleTheme() {
-    const current =
-      document.body.getAttribute("data-theme") || "light";
-
-    const next = current === "light" ? "dark" : "light";
-
-    applyTheme(next);
-
-    alert("Theme changed to " + next + " mode.");
+  function getCurrentTheme() {
+    return localStorage.getItem(THEME_KEY) || "light";
   }
 
-  function initSettings() {
-    const savedTheme =
-      localStorage.getItem(THEME_KEY) || "light";
+  function toggleTheme() {
+    const nextTheme =
+      getCurrentTheme() === "light"
+        ? "dark"
+        : "light";
 
-    applyTheme(savedTheme);
+    applyTheme(nextTheme);
 
-    const settingsBtn =
+    alert("✅ Theme changed to " + nextTheme + " mode.");
+  }
+
+  function resetSettings() {
+    localStorage.removeItem(THEME_KEY);
+
+    applyTheme("light");
+
+    alert("⚙️ Settings reset successfully.");
+  }
+
+  function openMenu() {
+    const option = prompt(
+      "Settings\n\n" +
+      "1 = Toggle Theme\n" +
+      "2 = Reset Settings"
+    );
+
+    switch (option) {
+      case "1":
+        toggleTheme();
+        break;
+
+      case "2":
+        resetSettings();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  function init() {
+    applyTheme(getCurrentTheme());
+
+    const btn =
       document.getElementById("settingsBtn");
 
-    if (!settingsBtn) return;
+    if (!btn) return;
 
-    settingsBtn.addEventListener("click", toggleTheme);
+    btn.addEventListener("click", openMenu);
   }
 
   document.addEventListener(
     "DOMContentLoaded",
-    initSettings
+    init
   );
 })();
