@@ -8,31 +8,44 @@
 
   const STORAGE_KEY = "safeher_trip_status";
 
+  function getTrip() {
+    try {
+      return JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "null"
+      );
+    } catch {
+      return null;
+    }
+  }
+
   function startTrip() {
     const destination = prompt("Enter your destination:");
 
-    if (!destination) {
+    if (destination === null) return;
+
+    const place = destination.trim();
+
+    if (!place) {
+      alert("Destination cannot be empty.");
       return;
     }
 
-    const tripData = {
-      destination: destination.trim(),
+    const trip = {
+      destination: place,
       startedAt: new Date().toLocaleString(),
       active: true
     };
 
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify(tripData)
+      JSON.stringify(trip)
     );
 
     alert("🚕 Trip started successfully.");
   }
 
   function viewTrip() {
-    const trip = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "null"
-    );
+    const trip = getTrip();
 
     if (!trip || !trip.active) {
       alert("No active trip found.");
@@ -51,36 +64,48 @@
     alert("✅ Trip ended.");
   }
 
-  function initTripMonitor() {
-    const btn = document.getElementById("tripBtn");
+  function openMenu() {
+    const option = prompt(
+      "Trip Monitor\n\n" +
+      "1 = Start Trip\n" +
+      "2 = View Trip\n" +
+      "3 = End Trip"
+    );
+
+    switch (option) {
+
+      case "1":
+        startTrip();
+        break;
+
+      case "2":
+        viewTrip();
+        break;
+
+      case "3":
+        endTrip();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  function init() {
+    const btn =
+      document.getElementById("tripBtn");
 
     if (!btn) return;
 
-    btn.addEventListener("click", () => {
-      const action = prompt(
-        "Type:\nstart - Start Trip\nview - View Trip\nend - End Trip"
-      );
-
-      if (!action) return;
-
-      switch (action.toLowerCase()) {
-        case "start":
-          startTrip();
-          break;
-        case "view":
-          viewTrip();
-          break;
-        case "end":
-          endTrip();
-          break;
-        default:
-          alert("Invalid option.");
-      }
-    });
+    btn.addEventListener(
+      "click",
+      openMenu
+    );
   }
 
   document.addEventListener(
     "DOMContentLoaded",
-    initTripMonitor
+    init
   );
+
 })();
