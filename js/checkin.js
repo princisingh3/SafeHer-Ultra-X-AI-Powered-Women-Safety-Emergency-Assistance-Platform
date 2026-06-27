@@ -8,44 +8,87 @@
 
   let timerId = null;
 
+  function cancelCheckIn() {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+      alert("✅ Check-In reminder cancelled.");
+    }
+  }
+
   function startCheckIn() {
-    const minutes = prompt(
-      "Check-in reminder after how many minutes?",
+    const input = prompt(
+      "Check-In reminder after how many minutes?",
       "15"
     );
 
-    if (!minutes) return;
+    if (input === null) return;
 
-    const delay = Number(minutes);
+    const minutes = parseInt(input, 10);
 
-    if (isNaN(delay) || delay <= 0) {
+    if (Number.isNaN(minutes) || minutes <= 0) {
       alert("Please enter a valid number.");
       return;
     }
 
-    if (timerId) {
-      clearTimeout(timerId);
-    }
+    cancelCheckIn();
 
-    timerId = setTimeout(() => {
+    timerId = setTimeout(function () {
+
       alert(
         "⏰ Safety Check-In Reminder\n\nPlease confirm that you are safe."
       );
-    }, delay * 60 * 1000);
 
-    alert("✅ Check-in reminder has been started.");
+      timerId = null;
+
+    }, minutes * 60 * 1000);
+
+    alert(
+      "✅ Check-In reminder started for " +
+      minutes +
+      " minute(s)."
+    );
   }
 
-  function initCheckIn() {
-    const btn = document.getElementById("checkInBtn");
+  function openMenu() {
+
+    const option = prompt(
+      "Safety Check-In\n\n" +
+      "1 = Start Reminder\n" +
+      "2 = Cancel Reminder"
+    );
+
+    switch (option) {
+
+      case "1":
+        startCheckIn();
+        break;
+
+      case "2":
+        cancelCheckIn();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  function init() {
+
+    const btn =
+      document.getElementById("checkInBtn");
 
     if (!btn) return;
 
-    btn.addEventListener("click", startCheckIn);
+    btn.addEventListener(
+      "click",
+      openMenu
+    );
   }
 
   document.addEventListener(
     "DOMContentLoaded",
-    initCheckIn
+    init
   );
+
 })();
